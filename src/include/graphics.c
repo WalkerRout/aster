@@ -14,12 +14,17 @@ int g_init(Graphics *graphics){
   if(!graphics->width == 0)     graphics->width  = ASTER_GRAPHICS_DEFAULT_WIDTH;
   if(!graphics->height == 0)    graphics->height = ASTER_GRAPHICS_DEFAULT_HEIGHT;
 
-  printf("%d, %d\n", graphics->width, graphics->height);
-
   graphics->window = SDL_CreateWindow(graphics->title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, graphics->width, graphics->height, SDL_WINDOW_SHOWN);
   
   if(graphics->window == NULL){
     SDL_Log("Unable to create window: %s", SDL_GetError());
+    return 1;
+  }
+
+  graphics->renderer = SDL_CreateRenderer(graphics->window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+
+  if(graphics->renderer == NULL){
+    SDL_Log("Unable to create renderer: %s", SDL_GetError());
     return 1;
   }
 
